@@ -1,6 +1,7 @@
 from django.db import models
 from ARC.constant import MAX_LENGTH
 
+
 # Modèle pour l'Entreprise
 class Company(models.Model):
     name: models.CharField = models.CharField(max_length=MAX_LENGTH, null=False)  # Nom de l'entreprise, non nullable
