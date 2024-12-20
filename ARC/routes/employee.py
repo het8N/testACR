@@ -1,17 +1,18 @@
 from ninja import Router
 from typing import List
+from django.http import HttpRequest
 from ..schemas import EmployeeSchema
-from ..models import Employee
+from ..models import Employee, Company, Building
 
-router = Router()
+router: Router = Router()
 
 
 @router.post("/employees", response=EmployeeSchema)
-def create_employee(request, data: EmployeeSchema):
-    company = Company.objects.get(id=data.company_id)
-    building = Building.objects.get(id=data.building_id)
+def create_employee(request: HttpRequest, data: EmployeeSchema) -> EmployeeSchema:
+    company: Company = Company.objects.get(id=data.company_id)
+    building: Building = Building.objects.get(id=data.building_id)
 
-    employee = Employee.objects.create(
+    employee: EmployeeSchema = Employee.objects.create(
         company=company,
         building=building,
         first_name=data.first_name,
@@ -23,20 +24,19 @@ def create_employee(request, data: EmployeeSchema):
 
 
 @router.get("/companies/{company_id}/employees", response=List[EmployeeSchema])
-def list_employees(request, company_id: int):
-    employees = Employee.objects.filter(company_id=company_id)
+def list_employees(request: HttpRequest, company_id: int) -> List[EmployeeSchema]:
+    employees: List[EmployeeSchema] = Employee.objects.filter(company_id=company_id)
     return employees
 
 
 @router.get("/employees/{employee_id}", response=EmployeeSchema)
-def get_employee(request, employee_id: int):
-    employee = Employee.objects.get(id=employee_id)
+def get_employee(request: HttpRequest, employee_id: int) -> EmployeeSchema:
+    employee: EmployeeSchema = Employee.objects.get(id=employee_id)
     return employee
 
 
-
 @router.delete("/employees/{employee_id}", response=EmployeeSchema)
-def delete_employee(request, employee_id: int):
-    employee = Employee.objects.get(id=employee_id)
+def delete_employee(request: HttpRequest, employee_id: int) -> EmployeeSchema:
+    employee: EmployeeSchema = Employee.objects.get(id=employee_id)
     employee.delete()
     return employee
