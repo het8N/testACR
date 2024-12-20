@@ -1,9 +1,10 @@
 from pydantic import BaseModel,Field
+from typing import Optional
 
 
 # Schéma pour le modèle Company
 class CompanySchema(BaseModel):
-    company_id: int = Field(..., alias='id')
+    company_id: Optional[int] = Field(None, alias="id")
     name: str
     industry: str
 
@@ -14,7 +15,7 @@ class CompanySchema(BaseModel):
 
 # Schéma pour le modèle Building
 class BuildingSchema(BaseModel):
-    building_id: int = Field(..., alias='id')
+    building_id: Optional[int] = Field(None, alias="id")
     company_id: int
     address: str
 
@@ -25,7 +26,7 @@ class BuildingSchema(BaseModel):
 
 # Schéma pour le modèle Employee
 class EmployeeSchema(BaseModel):
-    employee_id: int = Field(..., alias='id')
+    employee_id: Optional[int] = Field(None, alias='id')
     company_id: int
     building_id:int
     first_name: str

@@ -4,10 +4,10 @@ from django.http import HttpRequest
 from ..schemas import EmployeeSchema
 from ..models import Employee, Company, Building
 
-router: Router = Router()
+router = Router()
 
 
-@router.post("/employees", response=EmployeeSchema)
+@router.post("/", response=EmployeeSchema)
 def create_employee(request: HttpRequest, data: EmployeeSchema) -> EmployeeSchema:
     company: Company = Company.objects.get(id=data.company_id)
     building: Building = Building.objects.get(id=data.building_id)
@@ -23,19 +23,19 @@ def create_employee(request: HttpRequest, data: EmployeeSchema) -> EmployeeSchem
     return employee
 
 
-@router.get("/companies/{company_id}/employees", response=List[EmployeeSchema])
+@router.get("/", response=List[EmployeeSchema])
 def list_employees(request: HttpRequest, company_id: int) -> List[EmployeeSchema]:
     employees: List[EmployeeSchema] = Employee.objects.filter(company_id=company_id)
     return employees
 
 
-@router.get("/employees/{employee_id}", response=EmployeeSchema)
+@router.get("/{employee_id}", response=EmployeeSchema)
 def get_employee(request: HttpRequest, employee_id: int) -> EmployeeSchema:
     employee: EmployeeSchema = Employee.objects.get(id=employee_id)
     return employee
 
 
-@router.delete("/employees/{employee_id}", response=EmployeeSchema)
+@router.delete("/{employee_id}", response=EmployeeSchema)
 def delete_employee(request: HttpRequest, employee_id: int) -> EmployeeSchema:
     employee: EmployeeSchema = Employee.objects.get(id=employee_id)
     employee.delete()
